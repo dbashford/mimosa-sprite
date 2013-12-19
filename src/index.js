@@ -57,8 +57,8 @@ var _buildSpriteConfig = function ( mimosaConfig, folderPath ) {
 
 var _runSpriteGenerator = function ( generatorConfig, cb ) {
   if ( logger.isDebug ) {
-    logger.debug( "Generating sprite with config:" )
-    logger.debug( JSON.stringify( generatorConfig, null, 2 ) )
+    logger.debug( "Generating sprite with config:" );
+    logger.debug( JSON.stringify( generatorConfig, null, 2 ) );
   }
 
   nsg( generatorConfig, function ( err ) {
@@ -134,10 +134,11 @@ var _generateSprites = function ( mimosaConfig, next ) {
 var registerCommand = function ( program, retrieveConfig ) {
   program
     .command( 'sprite' )
-    .option("-D, --debug", "run in debug mode")
+    .option("-D, --mdebug", "run in debug mode")
     .description( "Generate image sprites for your Mimosa application" )
     .action( function( opts ){
-      if (opts.debug) {
+      if (opts.mdebug) {
+        opts.debug = true;
         logger.setDebug();
         process.env.DEBUG = true;
       }

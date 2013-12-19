@@ -1,6 +1,6 @@
 {
   "name": "mimosa-sprite",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "https://github.com/dbashford/mimosa-sprite",
   "author": "David Bashford",
   "description": "A module for Mimosa to generate sprites and corresponding Stylus/CSS",
