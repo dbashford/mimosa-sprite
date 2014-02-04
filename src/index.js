@@ -1,18 +1,34 @@
-var fs = require('fs'),
-    path = require('path'),
+var fs = require('fs')
+  , path = require('path')
 
-    nsg = require('node-sprite-generator'),
-    _ = require('lodash'),
-    async = require('async'),
-    logger = require('logmimosa'),
-    wrench = require('wrench'),
+  , nsg = require('node-sprite-generator')
+  , _ = require('lodash')
+  , async = require('async')
+  , logger = require('logmimosa')
+  , wrench = require('wrench')
 
-    config = require('./config');
+  , config = require('./config');
 
 var _makeDirectory = function ( dir ) {
-  if (!fs.existsSync(dir)) {
-    logger.debug("Making folder [[ " + dir + " ]]");
-    wrench.mkdirSyncRecursive(dir, 0777);
+  if ( !fs.existsSync( dir ) ) {
+    logger.debug( "Making folder [[ " + dir + " ]]" );
+    wrench.mkdirSyncRecursive( dir, 0777 );
+  }
+};
+
+var _determineExtension = function( stylesheet, outFile ) {
+  switch ( stylesheet ) {
+    case "stylus":
+      return ".styl";
+    case "sass":
+      return ".sass";
+    case "less":
+      return ".less";
+    case "css":
+      return ".css";
+    default:
+      logger.error( "mimosa-sprite unrecognized options.stylesheet: [[ " + mimosaConfig.sprite.options.stylesheet + " ]]" );
+      process.exit( 1 );
   }
 };
 
@@ -27,11 +43,16 @@ var _buildSpriteConfig = function ( mimosaConfig, folderPath ) {
   // out file stylesheets
   var stylesheetOutFile = path.join( mimosaConfig.sprite.stylesheetOutDirFull, folderName );
 
-  if (mimosaConfig.sprite.isStylus) {
-    stylesheetOutFile = stylesheetOutFile + ".styl";
+  var stylesheetType;
+  if ( typeof mimosaConfig.sprite.options.stylesheet === "string") {
+    stylesheetType = mimosaConfig.sprite.options.stylesheet;
   } else {
-    stylesheetOutFile = stylesheetOutFile + ".css";
+    var fakeOpts = {};
+    mimosaConfig.sprite.options( fakeOpts );
+    stylesheetType = fakeOpts.stylesheet;
   }
+
+  stylesheetOutFile += _determineExtension(  stylesheetType, stylesheetOutFile );
 
   var nsgConfig = {
     src: [path.join(folderPath, "*.png").replace(mimosaConfig.root + path.sep, "")],
@@ -39,15 +60,15 @@ var _buildSpriteConfig = function ( mimosaConfig, folderPath ) {
     stylesheetPath: stylesheetOutFile.replace(mimosaConfig.root + path.sep, "")
   };
 
-  if (mimosaConfig.sprite.commonDirFull) {
-    nsgConfig.src.push(path.join(mimosaConfig.sprite.commonDirFull, "*.png").replace(mimosaConfig.root + path.sep, ""));
+  if ( mimosaConfig.sprite.commonDirFull ) {
+    nsgConfig.src.push( path.join( mimosaConfig.sprite.commonDirFull, "*.png" ).replace( mimosaConfig.root + path.sep, "" ) );
   }
 
   // perform overrides
-  if ( typeof mimosaConfig.sprite.options === 'function') {
-    mimosaConfig.sprite.options(nsgConfig);
+  if ( typeof mimosaConfig.sprite.options === 'function' ) {
+    mimosaConfig.sprite.options( nsgConfig );
   } else {
-    nsgConfig = _.extend(nsgConfig, mimosaConfig.sprite.options);
+    nsgConfig = _.extend( nsgConfig, mimosaConfig.sprite.options );
   }
 
   _makeDirectory( path.dirname( spriteOutFile ) );
@@ -96,7 +117,7 @@ var _getAllSpriteConfigs = function ( mimosaConfig ) {
       }
     }
 
-    logger.warn("Sprite folder is empty [[ " + fullpath + " ]]");
+    logger.warn( "Sprite folder is empty [[ " + fullpath + " ]]" );
 
     return false;
   }).map( function createSpriteConfigForFolder( fullpath ) {

@@ -10,9 +10,9 @@ exports.defaults = function() {
       outDir: "images",
       commonDir: "common",
       stylesheetOutDir: "stylesheets/sprite",
-      isCSS: false,
-      isStylus: true,
-      options: {}
+      options: {
+        stylesheet: "stylus"
+      }
     }
   };
 };
@@ -30,8 +30,8 @@ exports.placeholder = function () {
       "                                # This is a string path relative to inDir.\n" +
       "    # stylesheetOutDir: \"stylesheets/sprite\"  # Where to place the output stylesheets. Path is relative\n" +
       "                                # to watch.sourceDir\n" +
-      "    # options: {}               # Pass through options for node-sprite-generator, the tool this\n" +
-      "                                # module uses under the hood to do the heavy lifting. Details on\n" +
+      "    # options:                  # Pass through options for node-sprite-generator, the tool this\n" +
+      "      # stylesheet: \"stylus\"    # module uses under the hood to do the heavy lifting. Details on\n" +
       "                                # the available options can be found here:\n" +
       "                                # https://github.com/selaux/node-sprite-generator#options\n" +
       "                                # mimosa-sprite provides the values for 'src', 'spritePath'\n" +
@@ -71,10 +71,12 @@ exports.validate = function ( config, validators ) {
 
     var o = config.sprite.options;
     if ( ( typeof o === "object" && !Array.isArray( o ) ) || ( typeof o === "function" )) {
-      if ( o.stylesheet && o.stylesheet === "css" ) {
-        config.sprite.isCSS = true;
-        config.sprite.isStylus = false;
+      if ( validators.ifExistsIsString( errors, "sprite.options.stylesheet", config.sprite.options.stylesheet ) ) {
+        if ( ["stylus", "less", "sass", "css"].indexOf( config.sprite.options.stylesheet ) === -1 ) {
+          errors.push( "sprite.options.stylesheet must be one of: stylus, less, sass, css" );
+        }
       }
+
     } else {
       errors.push( "sprite.options must be an object or a function" );
     }
