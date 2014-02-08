@@ -4,10 +4,11 @@ var fs = require('fs')
   , nsg = require('node-sprite-generator')
   , _ = require('lodash')
   , async = require('async')
-  , logger = require('logmimosa')
   , wrench = require('wrench')
 
-  , config = require('./config');
+  , config = require('./config')
+
+  , logger = null;
 
 var _makeDirectory = function ( dir ) {
   if ( !fs.existsSync( dir ) ) {
@@ -77,7 +78,7 @@ var _buildSpriteConfig = function ( mimosaConfig, folderPath ) {
 };
 
 var _runSpriteGenerator = function ( generatorConfig, cb ) {
-  if ( logger.isDebug ) {
+  if ( logger.isDebug() ) {
     logger.debug( "Generating sprite with config:" );
     logger.debug( JSON.stringify( generatorConfig, null, 2 ) );
   }
@@ -158,13 +159,8 @@ var registerCommand = function ( program, retrieveConfig ) {
     .option("-D, --mdebug", "run in debug mode")
     .description( "Generate image sprites for your Mimosa application" )
     .action( function( opts ){
-      if (opts.mdebug) {
-        opts.debug = true;
-        logger.setDebug();
-        process.env.DEBUG = true;
-      }
-
-      retrieveConfig( false, function( mimosaConfig ) {
+      retrieveConfig( false, !!opts.mdebug, function( mimosaConfig ) {
+        logger = mimosaConfig.log;
         _generateSprites( mimosaConfig );
       });
     });
