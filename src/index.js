@@ -23,6 +23,8 @@ var _determineExtension = function( stylesheet, outFile ) {
       return ".styl";
     case "sass":
       return ".sass";
+    case "scss":
+      return ".scss";
     case "less":
       return ".less";
     case "css":

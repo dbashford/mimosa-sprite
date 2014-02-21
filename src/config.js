@@ -72,8 +72,8 @@ exports.validate = function ( config, validators ) {
     var o = config.sprite.options;
     if ( ( typeof o === "object" && !Array.isArray( o ) ) || ( typeof o === "function" )) {
       if ( validators.ifExistsIsString( errors, "sprite.options.stylesheet", config.sprite.options.stylesheet ) ) {
-        if ( ["stylus", "less", "sass", "css"].indexOf( config.sprite.options.stylesheet ) === -1 ) {
-          errors.push( "sprite.options.stylesheet must be one of: stylus, less, sass, css" );
+        if ( ["stylus", "less", "sass", "scss", "css"].indexOf( config.sprite.options.stylesheet ) === -1 ) {
+          errors.push( "sprite.options.stylesheet must be one of: stylus, less, sass, scss, css" );
         }
       }
 
