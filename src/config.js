@@ -1,7 +1,7 @@
 "use strict";
 
-var path = require( 'path' ),
-    fs = require( 'fs' );
+var path = require( "path" ),
+    fs = require( "fs" );
 
 exports.defaults = function() {
   return {
@@ -18,20 +18,20 @@ exports.defaults = function() {
 };
 
 exports.placeholder = function () {
-   var ph = "  # sprite:                     #\n" +
-      "    # inDir: \"images/sprite\" # Folder inside which are the images to be sprited. Every folder\n" +
+   var ph = "  sprite:                     #\n" +
+      "    inDir: \"images/sprite\" # Folder inside which are the images to be sprited. Every folder\n" +
       "                                # at the root of this folder will generate a single sprite. This\n" +
       "                                # path is relative to watch.sourceDir, which defaults to 'assets'\n" +
-      "    # outDir: \"images\"     # Where to place generated sprites relative to watch.sourceDir\n" +
+      "    outDir: \"images\"     # Where to place generated sprites relative to watch.sourceDir\n" +
       "                                # Placing the output images outside the sprite directory makes it\n" +
       "                                # easy to exclude the sprite directory from being copied to \n" +
       "                                # watch.compiledDir.\n" +
-      "    # commonDir: \"common\"       # Folder inside which are images to be included in every sprite\n" +
+      "    commonDir: \"common\"       # Folder inside which are images to be included in every sprite\n" +
       "                                # This is a string path relative to inDir.\n" +
-      "    # stylesheetOutDir: \"stylesheets/sprite\"  # Where to place the output stylesheets. Path is relative\n" +
+      "    stylesheetOutDir: \"stylesheets/sprite\"  # Where to place the output stylesheets. Path is relative\n" +
       "                                # to watch.sourceDir\n" +
-      "    # options:                  # Pass through options for node-sprite-generator, the tool this\n" +
-      "      # stylesheet: \"stylus\"    # module uses under the hood to do the heavy lifting. Details on\n" +
+      "    options:                  # Pass through options for node-sprite-generator, the tool this\n" +
+      "      stylesheet: \"stylus\"    # module uses under the hood to do the heavy lifting. Details on\n" +
       "                                # the available options can be found here:\n" +
       "                                # https://github.com/selaux/node-sprite-generator#options\n" +
       "                                # mimosa-sprite provides the values for 'src', 'spritePath'\n" +
