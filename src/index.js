@@ -1,23 +1,26 @@
-var fs = require('fs')
-  , path = require('path')
+/* eslint strict:0 */
 
-  , nsg = require('node-sprite-generator')
-  , _ = require('lodash')
-  , async = require('async')
-  , wrench = require('wrench')
+var fs = require( "fs" )
+  , path = require( "path" )
 
-  , config = require('./config')
+  , nsg = require( "node-sprite-generator" )
+  , _ = require( "lodash" )
+  , async = require( "async" )
+  , wrench = require( "wrench" )
+
+  , config = require( "./config" )
 
   , logger = null;
 
 var _makeDirectory = function ( dir ) {
   if ( !fs.existsSync( dir ) ) {
     logger.debug( "Making folder [[ " + dir + " ]]" );
+    /* eslint no-octal:0 */
     wrench.mkdirSyncRecursive( dir, 0777 );
   }
 };
 
-var _determineExtension = function( stylesheet, outFile ) {
+var _determineExtension = function( stylesheet ) {
   switch ( stylesheet ) {
     case "stylus":
       return ".styl";
@@ -30,7 +33,8 @@ var _determineExtension = function( stylesheet, outFile ) {
     case "css":
       return ".css";
     default:
-      logger.error( "mimosa-sprite unrecognized options.stylesheet: [[ " + mimosaConfig.sprite.options.stylesheet + " ]]" );
+      logger.error( "mimosa-sprite unrecognized options.stylesheet: [[ " + stylesheet + " ]]" );
+      /* eslint no-process-exit:0 */
       process.exit( 1 );
   }
 };
@@ -55,7 +59,7 @@ var _buildSpriteConfig = function ( mimosaConfig, folderPath ) {
     stylesheetType = fakeOpts.stylesheet;
   }
 
-  stylesheetOutFile += _determineExtension(  stylesheetType, stylesheetOutFile );
+  stylesheetOutFile += _determineExtension(  stylesheetType );
 
   var nsgConfig = {
     src: [path.join(folderPath, "*.png").replace(mimosaConfig.root + path.sep, "")],
@@ -68,7 +72,7 @@ var _buildSpriteConfig = function ( mimosaConfig, folderPath ) {
   }
 
   // perform overrides
-  if ( typeof mimosaConfig.sprite.options === 'function' ) {
+  if ( typeof mimosaConfig.sprite.options === "function" ) {
     mimosaConfig.sprite.options( nsgConfig );
   } else {
     nsgConfig = _.extend( nsgConfig, mimosaConfig.sprite.options );
@@ -157,7 +161,7 @@ var _generateSprites = function ( mimosaConfig, next ) {
 
 var registerCommand = function ( program, retrieveConfig ) {
   program
-    .command( 'sprite' )
+    .command( "sprite" )
     .option("-D, --mdebug", "run in debug mode")
     .description( "Generate image sprites for your Mimosa application" )
     .action( function( opts ){
