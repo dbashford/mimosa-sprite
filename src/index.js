@@ -163,9 +163,11 @@ var registerCommand = function ( program, retrieveConfig ) {
   program
     .command( "sprite" )
     .option("-D, --mdebug", "run in debug mode")
+    .option("-P, --profile <profileName>", "select a mimosa profile")
     .description( "Generate image sprites for your Mimosa application" )
     .action( function( opts ){
-      retrieveConfig( false, !!opts.mdebug, function( mimosaConfig ) {
+      opts.buildFirst = false;
+      retrieveConfig( opts, function( mimosaConfig ) {
         logger = mimosaConfig.log;
         _generateSprites( mimosaConfig );
       });
