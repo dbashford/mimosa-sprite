@@ -8,6 +8,8 @@ For an example Mimosa app that uses this module, checkout the [MimosaSpriteExamp
 
 For more information regarding Mimosa, see http://mimosa.io.
 
+Note: `v0.5.0` of mimosa-sprite requires `2.2.17` of Mimosa.
+
 ## Usage
 
 Add `'sprite'` to your list of modules.  That's all!  Mimosa will install the module for you when you start up.
