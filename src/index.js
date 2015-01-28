@@ -134,13 +134,10 @@ var _getAllSpriteConfigs = function ( mimosaConfig ) {
   return configs;
 };
 
-var _generateSprites = function ( mimosaConfig, next ) {
+var _generateSprites = function ( mimosaConfig ) {
 
   if ( !fs.existsSync( mimosaConfig.sprite.inDirFull ) ) {
     logger.error( "Could not find sprite.inDir directory at [[ " + mimosaConfig.sprite.inDirFull + " ]]" );
-    if ( next ) {
-      next();
-    }
     return;
   }
 
@@ -153,10 +150,6 @@ var _generateSprites = function ( mimosaConfig, next ) {
   async.eachSeries( configs, function( config, cb ) {
     _runSpriteGenerator( config, cb );
   });
-
-  if ( next ) {
-    next();
-  }
 };
 
 var registerCommand = function ( program, retrieveConfig ) {
