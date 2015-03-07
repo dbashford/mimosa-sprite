@@ -100,6 +100,7 @@ var _runSpriteGenerator = function ( generatorConfig, cb ) {
 };
 
 var _getAllSpriteConfigs = function ( mimosaConfig ) {
+
   var configs = wrench.readdirSyncRecursive( mimosaConfig.sprite.inDirFull ).map( function( shortPath ) {
     // build full path
     return path.join(mimosaConfig.sprite.inDirFull, shortPath);
@@ -152,7 +153,8 @@ var _generateSprites = function ( mimosaConfig ) {
   });
 };
 
-var registerCommand = function ( program, retrieveConfig ) {
+var registerCommand = function ( program, _logger, retrieveConfig ) {
+  logger = _logger;
   program
     .command( "sprite" )
     .option("-D, --mdebug", "run in debug mode")
@@ -161,7 +163,6 @@ var registerCommand = function ( program, retrieveConfig ) {
     .action( function( opts ){
       opts.buildFirst = false;
       retrieveConfig( opts, function( mimosaConfig ) {
-        logger = mimosaConfig.log;
         _generateSprites( mimosaConfig );
       });
     });
@@ -170,6 +171,5 @@ var registerCommand = function ( program, retrieveConfig ) {
 module.exports = {
   registerCommand: registerCommand,
   defaults:        config.defaults,
-  placeholder:     config.placeholder,
   validate:        config.validate
 };

@@ -33,7 +33,7 @@ node-sprite-generator offers up a large set of [configuration options](https://g
 ## Default Config
 
 ```javascript
-sprite:
+sprite: {
   inDir: "images/sprite",
   outDir: "images",
   commonDir: "common",
@@ -41,6 +41,7 @@ sprite:
   options: {
     stylesheet:"stylus"
   }
+}
 ```
 
 * `inDir`: a string. The folder inside which are the images to be sprited. Every folder at the root of this folder will generate a single sprite. This path is relative to `watch.sourceDir`, which defaults to `assets`
